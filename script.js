@@ -80,18 +80,16 @@ function operandCheck(userInput) {
 };
 
 function processInput(userInput) {
-  console.log(userInput);
   if (operandCheck(userInput)) {
-    console.log('yo this button working dawg');
     if (operand == undefined && numOne == 0) {
-      numOne = currentSequence;
-      numTwo = currentSequence;
+      numOne = convertString(currentSequence);  //possible refactor convertString
+      numTwo = convertString(currentSequence);
       operand = userInput;
       clearCurrentSequence();
     } else if (operand != undefined && currentSequence == 0) {
       operand = userInput;
     } else if (operand != undefined && currentSequence != 0) {
-      numTwo = currentSequence;
+      numTwo = convertString(currentSequence);
       result = operate(numOne, numTwo, operand);
       displayNum(result);
       numOne = result;
@@ -100,14 +98,12 @@ function processInput(userInput) {
       operand = userInput;
     };
   } else if (userInput == "=") {
-    console.log('working')
-    numTwo = currentSequence;
+    numTwo = convertString(currentSequence);
     result = operate(numOne, numTwo, operand);
     displayNum(result);
   } else {
-    // currentSequence += input;
-    // updateNumVariable(currentSequence);
     currentSequence += userInput;
+    currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
     displayNum(currentSequence);
   };
 };
@@ -122,6 +118,12 @@ function clearCurrentSequence() {
 
 function displayNum(num) {
   resultDisplay.textContent = num
+};
+
+//convertString(str)
+
+function convertString(str) {
+  return parseInt(str);
 };
 
 setupKeyPadBtnListeners();
