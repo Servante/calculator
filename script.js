@@ -1,15 +1,18 @@
 
 //variables for number and operand storage
 
-let numberOne = 0;
-let numberTwo = 0;
+let keyPadButtons = document.querySelectorAll('.keyPad-btn');
+let resultDisplay = document.getElementById('display');
+let numOne = 0;
+let numTwo = 0;
 let operand = undefined;
-let resultDisplay = 0;
-
+// let resultDisplay = 0; 
+let currentSequence = '';
+// let inputCounter = 0;
 
 //operation functions
 
-const add = function(a, b) {
+const add = function(a, b) {    //rewrite as arrow functions
   return a + b;
 };
 
@@ -29,7 +32,7 @@ const divide = function(a, b) {
 //-write a function that takes two numbers and an operand as parameters, 
 //allowing it to perform the specified operation on the given numbers and returning the result."
 
-let operate = function(num1, num2, operand) {
+const operate = function(num1, num2, operand) {
   let result;
 
   switch (operand) {
@@ -49,3 +52,76 @@ let operate = function(num1, num2, operand) {
   return result;
 };
 
+
+//Function to update display with inputted data
+
+function setupKeyPadBtnListeners() {
+  keyPadButtons.forEach(function(button) {
+    button.addEventListener('click', function() {
+      // console.log('this')
+      input = button.getAttribute('data-value');
+      // currentSequence += input;
+      // updateNumVariable(currentSequence);
+      processInput(input);
+     
+      // resultDisplay.textContent = currentSequence;
+    });
+  });
+};
+
+function operandCheck(userInput) {
+  const ALLOWED_OPERATORS = ['+', '-', '/', '*'];
+
+  if (ALLOWED_OPERATORS.includes(userInput)) {
+    return true;
+  } else {
+    return false;
+  };
+};
+
+function processInput(userInput) {
+  console.log(userInput);
+  if (operandCheck(userInput)) {
+    console.log('yo this button working dawg');
+    if (operand == undefined && numOne == 0) {
+      numOne = currentSequence;
+      numTwo = currentSequence;
+      operand = userInput;
+      clearCurrentSequence();
+    } else if (operand != undefined && currentSequence == 0) {
+      operand = userInput;
+    } else if (operand != undefined && currentSequence != 0) {
+      numTwo = currentSequence;
+      result = operate(numOne, numTwo, operand);
+      displayNum(result);
+      numOne = result;
+      numTwo = 0;
+      clearCurrentSequence();
+      operand = userInput;
+    };
+  } else if (userInput == "=") {
+    console.log('working')
+    numTwo = currentSequence;
+    result = operate(numOne, numTwo, operand);
+    displayNum(result);
+  } else {
+    // currentSequence += input;
+    // updateNumVariable(currentSequence);
+    currentSequence += userInput;
+    displayNum(currentSequence);
+  };
+};
+
+//clearCurrentSequence();
+
+function clearCurrentSequence() {
+  currentSequence = 0;
+};
+
+//displayNum();
+
+function displayNum(num) {
+  resultDisplay.textContent = num
+};
+
+setupKeyPadBtnListeners();
