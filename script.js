@@ -100,6 +100,8 @@ function processInput(userInput) {
   } else if (userInput == "=") {
     numTwo = convertString(currentSequence);
     result = operate(numOne, numTwo, operand);
+    numOne = result;
+    clearCurrentSequence();
     displayNum(result);
   } else {
     currentSequence += userInput;
@@ -107,6 +109,9 @@ function processInput(userInput) {
     displayNum(currentSequence);
   };
 };
+
+//current bug: after a standard computation (using operate key), result is stored in numOne, not allowing them to make
+//subsequent computation
 
 //clearCurrentSequence();
 
