@@ -83,15 +83,19 @@ function processInput(userInput) {
       operand = userInput;
       clearCurrentSequence();
     };
-  } else if (userInput == "=") {
-    numTwo = convertString(currentSequence);
-    result = operate(numOne, numTwo, operand);
-    tempOne = result;
-    clearCurrentSequence();
-    operand = undefined;
-    numOne = result;
-    numTwo = 0;
-    displayNum(result);
+  } else if (userInput === "=") {
+    if (operand !== undefined && currentSequence !== 0) {
+      numTwo = convertString(currentSequence);
+      result = operate(numOne, numTwo, operand);
+      tempOne = result;
+      clearCurrentSequence();
+      operand = undefined;
+      numOne = result;
+      numTwo = 0;
+      displayNum(result);
+    } else {
+      // Do nothing if the user presses "=" without a valid expression
+    };
   } else {
     currentSequence += userInput;
     currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
