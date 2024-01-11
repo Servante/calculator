@@ -6,9 +6,7 @@ let resultDisplay = document.getElementById('display');
 let numOne = 0;
 let numTwo = 0;
 let operand = undefined;
-// let resultDisplay = 0; 
 let currentSequence = '';
-// let inputCounter = 0;
 
 //operation functions
 
@@ -27,7 +25,6 @@ const multiply = function(a, b) {
 const divide = function(a, b) {
   return a / b
 };
-
 
 //-write a function that takes two numbers and an operand as parameters, 
 //allowing it to perform the specified operation on the given numbers and returning the result."
@@ -52,37 +49,26 @@ const operate = function(num1, num2, operand) {
   return result;
 };
 
-
 //Function to update display with inputted data
 
 function setupKeyPadBtnListeners() {
   keyPadButtons.forEach(function(button) {
     button.addEventListener('click', function() {
-      // console.log('this')
       input = button.getAttribute('data-value');
-      // currentSequence += input;
-      // updateNumVariable(currentSequence);
       processInput(input);
-     
-      // resultDisplay.textContent = currentSequence;
-    });
+     });
   });
 };
 
 function operandCheck(userInput) {
   const ALLOWED_OPERATORS = ['+', '-', '/', '*'];
-
-  if (ALLOWED_OPERATORS.includes(userInput)) {
-    return true;
-  } else {
-    return false;
-  };
+  return (ALLOWED_OPERATORS.includes(userInput));
 };
 
 function processInput(userInput) {
   if (operandCheck(userInput)) {
     if (operand == undefined && numOne == 0) {
-      numOne = convertString(currentSequence);  //possible refactor convertString
+      numOne = convertString(currentSequence);  
       numTwo = convertString(currentSequence);
       operand = userInput;
       clearCurrentSequence();
@@ -94,14 +80,17 @@ function processInput(userInput) {
       displayNum(result);
       numOne = result;
       numTwo = 0;
-      clearCurrentSequence();
       operand = userInput;
+      clearCurrentSequence();
     };
   } else if (userInput == "=") {
     numTwo = convertString(currentSequence);
     result = operate(numOne, numTwo, operand);
-    numOne = result;
+    tempOne = result;
     clearCurrentSequence();
+    operand = undefined;
+    numOne = result;
+    numTwo = 0;
     displayNum(result);
   } else {
     currentSequence += userInput;
@@ -109,9 +98,6 @@ function processInput(userInput) {
     displayNum(currentSequence);
   };
 };
-
-//current bug: after a standard computation (using operate key), result is stored in numOne, not allowing them to make
-//subsequent computation
 
 //clearCurrentSequence();
 
