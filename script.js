@@ -108,7 +108,9 @@ function clearCurrentSequence() {
 //displayNum();
 
 function displayNum(num) {
-  resultDisplay.textContent = num
+  // Round the result to 4 decimal places
+  const roundedResult = Math.round(num * 10000) / 10000;
+  resultDisplay.textContent = roundedResult;
 };
 
 //convertString(str)
