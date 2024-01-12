@@ -84,18 +84,20 @@ function processInput(userInput) {
       clearCurrentSequence();
     };
   } else if (userInput === "=") {
-    if (operand !== undefined && currentSequence !== 0) {
-      numTwo = convertString(currentSequence);
-      result = operate(numOne, numTwo, operand);
-      tempOne = result;
-      clearCurrentSequence();
-      operand = undefined;
-      numOne = result;
-      numTwo = 0;
-      displayNum(result);
+      if (operand !== undefined && currentSequence !== 0) {
+        numTwo = convertString(currentSequence);
+        result = operate(numOne, numTwo, operand);
+        tempOne = result;
+        clearCurrentSequence();
+        operand = undefined;
+        numOne = result;
+        numTwo = 0;
+        displayNum(result);
     } else {
       // Do nothing if the user presses "=" without a valid expression
     };
+  } else if (userInput === "AC") {
+    allClear();
   } else {
     currentSequence += userInput;
     currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
@@ -121,6 +123,16 @@ function displayNum(num) {
 
 function convertString(str) {
   return parseInt(str);
+};
+
+//allClear();
+
+function allClear() {
+  clearCurrentSequence();
+  numOne = 0;
+  numTwo = 0;
+  operand = undefined;
+  displayNum(currentSequence);
 };
 
 setupKeyPadBtnListeners();
