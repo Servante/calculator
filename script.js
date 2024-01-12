@@ -30,6 +30,11 @@ const divide = function(a, b) {
 //allowing it to perform the specified operation on the given numbers and returning the result."
 
 const operate = function(num1, num2, operand) {
+  if (num2 == 0 && operand == "/") {
+    alert("Yeah, yeah. Nice try, bub,")
+    return;
+  };
+
   let result;
 
   switch (operand) {
@@ -66,12 +71,15 @@ function operandCheck(userInput) {
 };
 
 function processInput(userInput) {
+  // debugger
   if (operandCheck(userInput)) {
     if (operand == undefined && numOne == 0) {
       numOne = convertString(currentSequence);  
       numTwo = convertString(currentSequence);
       operand = userInput;
       clearCurrentSequence();
+    } else if (operand == undefined && numOne != 0) {
+      operand = userInput;
     } else if (operand != undefined && currentSequence == 0) {
       operand = userInput;
     } else if (operand != undefined && currentSequence != 0) {
