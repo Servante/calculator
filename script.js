@@ -144,3 +144,4 @@ function allClear() {
 };
 
 setupKeyPadBtnListeners();
+displayNum(numOne);
