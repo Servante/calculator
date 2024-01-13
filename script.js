@@ -1,11 +1,11 @@
 
-//variables for number and operand storage
+//variables for number and operator storage
 
 let keyPadButtons = document.querySelectorAll('.keyPad-btn');
 let resultDisplay = document.getElementById('display');
 let numOne = 0;
 let numTwo = 0;
-let operand = undefined;
+let operator = undefined;
 let currentSequence = '';
 
 //operation functions
@@ -26,18 +26,18 @@ const divide = function(a, b) {
   return a / b
 };
 
-//-write a function that takes two numbers and an operand as parameters, 
+//-write a function that takes two numbers and an operator as parameters, 
 //allowing it to perform the specified operation on the given numbers and returning the result."
 
-const operate = function(num1, num2, operand) {
-  if (num2 == 0 && operand == "/") {
+const operate = function(num1, num2, operator) {
+  if (num2 == 0 && operator == "/") {
     alert("Yeah, yeah. Nice try, bub,")
     return;
   };
 
   let result;
 
-  switch (operand) {
+  switch (operator) {
     case "+":
       result = add(num1, num2);
       break;
@@ -65,39 +65,39 @@ function setupKeyPadBtnListeners() {
   });
 };
 
-function operandCheck(userInput) {
+function operatorCheck(userInput) {
   const ALLOWED_OPERATORS = ['+', '-', '/', '*'];
   return (ALLOWED_OPERATORS.includes(userInput));
 };
 
 function processInput(userInput) {
   // debugger
-  if (operandCheck(userInput)) {
-    if (operand == undefined && numOne == 0) {
+  if (operatorCheck(userInput)) {
+    if (operator == undefined && numOne == 0) {
       numOne = convertString(currentSequence);  
       numTwo = convertString(currentSequence);
-      operand = userInput;
+      operator = userInput;
       clearCurrentSequence();
-    } else if (operand == undefined && numOne != 0) {
-      operand = userInput;
-    } else if (operand != undefined && currentSequence == 0) {
-      operand = userInput;
-    } else if (operand != undefined && currentSequence != 0) {
+    } else if (operator == undefined && numOne != 0) {
+      operator = userInput;
+    } else if (operator != undefined && currentSequence == 0) {
+      operator = userInput;
+    } else if (operator != undefined && currentSequence != 0) {
       numTwo = convertString(currentSequence);
-      result = operate(numOne, numTwo, operand);
+      result = operate(numOne, numTwo, operator);
       displayNum(result);
       numOne = result;
       numTwo = 0;
-      operand = userInput;
+      operator = userInput;
       clearCurrentSequence();
     };
   } else if (userInput === "=") {
-      if (operand !== undefined && currentSequence !== 0) {
+      if (operator !== undefined && currentSequence !== 0) {
         numTwo = convertString(currentSequence);
-        result = operate(numOne, numTwo, operand);
+        result = operate(numOne, numTwo, operator);
         tempOne = result;
         clearCurrentSequence();
-        operand = undefined;
+        operator = undefined;
         numOne = result;
         numTwo = 0;
         displayNum(result);
@@ -139,7 +139,7 @@ function allClear() {
   clearCurrentSequence();
   numOne = 0;
   numTwo = 0;
-  operand = undefined;
+  operator = undefined;
   displayNum(currentSequence);
 };
 
