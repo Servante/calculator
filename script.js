@@ -68,14 +68,14 @@ function operatorCheck(userInput) {
 function processInput(userInput) {
   // debugger
   if (operatorCheck(userInput)) {
-    if (operator == undefined && numOne == 0) {
+    if (operator === undefined && numOne === 0) {
       numOne = convertString(currentSequence);  
       numTwo = convertString(currentSequence);
       operator = userInput;
       clearCurrentSequence();
-    } else if (operator == undefined && numOne != 0) {
+    } else if (operator === undefined && numOne != 0) {
       operator = userInput;
-    } else if (operator != undefined && currentSequence == 0) {
+    } else if (operator != undefined && currentSequence === 0) {
       operator = userInput;
     } else if (operator != undefined && currentSequence != 0) {
       numTwo = convertString(currentSequence);
@@ -89,7 +89,7 @@ function processInput(userInput) {
   } else if (userInput === "=") {
     debugger
     numTwo = convertString(currentSequence);
-      if (numTwo == 0 && operator == "/") {
+      if (numTwo === 0 && operator === "/") {
         alert("Yeah, yeah. Nice try, bub.")
         allClear();
         return;
