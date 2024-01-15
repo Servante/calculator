@@ -1,4 +1,3 @@
-
 //variables for number and operator storage
 
 let keyPadButtons = document.querySelectorAll('.keyPad-btn');
@@ -66,7 +65,6 @@ function operatorCheck(userInput) {
 };
 
 function processInput(userInput) {
-  // debugger
   if (operatorCheck(userInput)) {
     if (operator === undefined && numOne === 0) {
       numOne = convertString(currentSequence);  
@@ -87,7 +85,6 @@ function processInput(userInput) {
       clearCurrentSequence();
     };
   } else if (userInput === "=") {
-    debugger
     numTwo = convertString(currentSequence);
       if (numTwo === 0 && operator === "/") {
         alert("Yeah, yeah. Nice try, bub.")
@@ -106,6 +103,9 @@ function processInput(userInput) {
     };
   } else if (userInput === "AC") {
     allClear();
+  } else if (userInput === ".") {
+    (currentSequence.includes('.')) ? alert("Only one '.' per number please") : currentSequence += userInput;
+    displayNum(currentSequence);
   } else {
     currentSequence += userInput;
     currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
@@ -116,21 +116,22 @@ function processInput(userInput) {
 //clearCurrentSequence();
 
 function clearCurrentSequence() {
-  currentSequence = 0;
+  currentSequence = '';
 };
 
 //displayNum();
 
 function displayNum(num) {
   // Round the result to 4 decimal places
-  const roundedResult = Math.round(num * 10000) / 10000;
-  resultDisplay.textContent = roundedResult;
+  resultDisplay.textContent = (num === '.') ? num : Math.round(num * 10000) / 10000;
+  // const roundedResult = Math.round(num * 10000) / 10000;
+  // resultDisplay.textContent = roundedResult;
 };
 
 //convertString(str)
 
 function convertString(str) {
-  return parseInt(str);
+  return parseFloat(str);
 };
 
 //allClear();
