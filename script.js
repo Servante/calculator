@@ -72,17 +72,17 @@ function processInput(userInput) {
       operator = userInput;
       clearCurrentSequence();
     } else if (operator === undefined && numOne != 0) {
-      operator = userInput;
+        operator = userInput;
     } else if (operator != undefined && currentSequence === 0) {
-      operator = userInput;
+        operator = userInput;
     } else if (operator != undefined && currentSequence != 0) {
-      numTwo = convertString(currentSequence);
-      result = operate(numOne, numTwo, operator);
-      displayNum(result);
-      numOne = result;
-      numTwo = 0;
-      operator = userInput;
-      clearCurrentSequence();
+        numTwo = convertString(currentSequence);
+        result = operate(numOne, numTwo, operator);
+        displayNum(result);
+        numOne = result;
+        numTwo = 0;
+        operator = userInput;
+        clearCurrentSequence();
     };
   } else if (userInput === "=") {
     numTwo = convertString(currentSequence);
@@ -102,14 +102,17 @@ function processInput(userInput) {
       // Do nothing if the user presses "=" without a valid expression
     };
   } else if (userInput === "AC") {
-    allClear();
+      allClear();
+  } else if (userInput === "DEL") {
+      currentSequence = currentSequence.slice(0, -1);
+      displayNum(currentSequence);
   } else if (userInput === ".") {
-    (currentSequence.includes('.')) ? alert("Only one '.' per number please") : currentSequence += userInput;
-    displayNum(currentSequence);
+      (currentSequence.includes('.')) ? alert("Only one '.' per number please") : currentSequence += userInput;
+      displayNum(currentSequence);
   } else {
-    currentSequence += userInput;
-    currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
-    displayNum(currentSequence);
+      currentSequence += userInput;
+      currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
+      displayNum(currentSequence);
   };
 };
 
@@ -124,8 +127,6 @@ function clearCurrentSequence() {
 function displayNum(num) {
   // Round the result to 4 decimal places
   resultDisplay.textContent = (num === '.') ? num : Math.round(num * 10000) / 10000;
-  // const roundedResult = Math.round(num * 10000) / 10000;
-  // resultDisplay.textContent = roundedResult;
 };
 
 //convertString(str)
