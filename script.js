@@ -48,8 +48,7 @@ const operate = function(num1, num2, operator) {
   return result;
 };
 
-//Function to update display with inputted data
-
+// Function to update display with inputted data
 function setupKeyPadBtnListeners() {
   keyPadButtons.forEach(function(button) {
     button.addEventListener('click', function() {
@@ -59,12 +58,31 @@ function setupKeyPadBtnListeners() {
   });
 };
 
+// Function to handle keyboard events
+function handleKeyDown(event) {
+  debugger
+  const key = event.key;
+  if (!isNaN(key) || key === '.' || key  === '+' || key == "-" || key === '*' || key === '/') {
+    processInput(key);    
+  } else if (key === '=' || key === 'Enter') {
+    processInput('=');
+  } else if (key === 'Delete') {
+    processInput('AC')
+  } else if (key === 'Backspace') {
+    processInput('DEL');
+  }; 
+};
+
+// Add event listener for keyboard events
+document.addEventListener('keydown', handleKeyDown);
+
 function operatorCheck(userInput) {
   const ALLOWED_OPERATORS = ['+', '-', '/', '*'];
   return (ALLOWED_OPERATORS.includes(userInput));
 };
 
 function processInput(userInput) {
+  // debugger
   if (operatorCheck(userInput)) {
     if (operator === undefined && numOne === 0) {
       numOne = convertString(currentSequence);  
@@ -72,17 +90,17 @@ function processInput(userInput) {
       operator = userInput;
       clearCurrentSequence();
     } else if (operator === undefined && numOne != 0) {
-        operator = userInput;
+      operator = userInput;
     } else if (operator != undefined && currentSequence === 0) {
-        operator = userInput;
+      operator = userInput;
     } else if (operator != undefined && currentSequence != 0) {
-        numTwo = convertString(currentSequence);
-        result = operate(numOne, numTwo, operator);
-        displayNum(result);
-        numOne = result;
-        numTwo = 0;
-        operator = userInput;
-        clearCurrentSequence();
+      numTwo = convertString(currentSequence);
+      result = operate(numOne, numTwo, operator);
+      displayResult(result);
+      numOne = result;
+      numTwo = 0;
+      operator = userInput;
+      clearCurrentSequence();
     };
   } else if (userInput === "=") {
     numTwo = convertString(currentSequence);
@@ -91,43 +109,53 @@ function processInput(userInput) {
         allClear();
         return;
     } else if (operator !== undefined && currentSequence !== 0) {
-        result = operate(numOne, numTwo, operator);
-        tempOne = result;
-        clearCurrentSequence();
-        operator = undefined;
-        numOne = result;
-        numTwo = 0;
-        displayNum(result);
+      result = operate(numOne, numTwo, operator);
+      tempOne = result;
+      clearCurrentSequence();
+      operator = undefined;
+      numOne = result;
+      numTwo = 0;
+      displayResult(result);
     } else {
       // Do nothing if the user presses "=" without a valid expression
     };
   } else if (userInput === "AC") {
-      allClear();
+    allClear();
   } else if (userInput === "DEL") {
-      currentSequence = currentSequence.slice(0, -1);
-      displayNum(currentSequence);
+    currentSequence = currentSequence.slice(0, -1);
+    currentSequence === '' ? displayDefault() : displayCurSeq();
   } else if (userInput === ".") {
-      (currentSequence.includes('.')) ? alert("Only one '.' per number please") : currentSequence += userInput;
-      displayNum(currentSequence);
+    (currentSequence.includes('.')) ? alert("Only one '.' per number please") : currentSequence += userInput;
+    displayCurSeq();
   } else {
-      currentSequence += userInput;
-      currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
-      displayNum(currentSequence);
+    currentSequence += userInput;
+    currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
+    displayCurSeq();
   };
 };
 
-//clearCurrentSequence();
+// clearCurrentSequence();
 
 function clearCurrentSequence() {
   currentSequence = '';
 };
 
-//displayNum();
+// display functions 
 
-function displayNum(num) {
-  // Round the result to 4 decimal places
-  resultDisplay.textContent = (num === '.') ? num : Math.round(num * 10000) / 10000;
+// display results that have been rounded to prevent container runoff
+function displayResult(num) {
+  resultDisplay.textContent = Math.round(num * 10000) / 10000;
 };
+
+// displays current sequence
+function displayCurSeq() {
+  resultDisplay.textContent = currentSequence;
+};
+
+//displays zero for appropriate instances
+function displayDefault() {
+  resultDisplay.textContent = 0;
+}; 
 
 //convertString(str)
 
@@ -142,8 +170,8 @@ function allClear() {
   numOne = 0;
   numTwo = 0;
   operator = undefined;
-  displayNum(currentSequence);
+  displayDefault();
 };
 
 setupKeyPadBtnListeners();
-displayNum(numOne);
+displayDefault();
