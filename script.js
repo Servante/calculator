@@ -1,35 +1,21 @@
-//variables for number and operator storage
-
-let keyPadButtons = document.querySelectorAll('.keyPad-btn');
-let resultDisplay = document.getElementById('display');
+// caching the DOM and variables for number and operator storage
+const KEYPAD_BUTTONS = document.querySelectorAll('.keyPad-btn');
+const RESULT_DISPLAY = document.getElementById('display');
 let numOne = 0;
 let numTwo = 0;
 let operator = undefined;
 let currentSequence = '';
 
-//operation functions
+// operate() functions
+const add = (a, b) => a + b;
+const subtract = (a, b) => a - b;
+const multiply = (a, b) => a * b;
+const divide = (a, b) => a / b;
 
-const add = function(a, b) {    //rewrite as arrow functions
-  return a + b;
-};
-
-const subtract = function(a, b) {
-  return a - b;
-};
-
-const multiply = function(a, b) {
-  return a * b;
-};
-
-const divide = function(a, b) {
-  return a / b
-};
-
-//-write a function that takes two numbers and an operator as parameters, 
-//allowing it to perform the specified operation on the given numbers and returning the result."
-
-const operate = function(num1, num2, operator) {
-  let result;
+// function takes two numbers and an operator as parameters, 
+// allowing it to perform the specified operation on the given numbers and returning the result.
+const operate = (num1, num2, operator) => {
+  const result;
 
   switch (operator) {
     case "+":
@@ -48,21 +34,20 @@ const operate = function(num1, num2, operator) {
   return result;
 };
 
-// Function to update display with inputted data
-function setupKeyPadBtnListeners() {
-  keyPadButtons.forEach(function(button) {
-    button.addEventListener('click', function() {
-      input = button.getAttribute('data-value');
+// Function to add event listeners that update display with inputted data
+const setupKeyPadBtnListeners = () => {
+  KEYPAD_BUTTONS.forEach((button) => {
+    button.addEventListener('click', () => {
+      const input = button.getAttribute('data-value');
       processInput(input);
      });
   });
 };
 
 // Function to handle keyboard events
-function handleKeyDown(event) {
-  debugger
+const handleKeyDown = (event) => {
   const key = event.key;
-  if (!isNaN(key) || key === '.' || key  === '+' || key == "-" || key === '*' || key === '/') {
+  if (!isNaN(key) || ['+', '-', '*', '/'].includes(key)) {
     processInput(key);    
   } else if (key === '=' || key === 'Enter') {
     processInput('=');
@@ -73,28 +58,29 @@ function handleKeyDown(event) {
   }; 
 };
 
-// Add event listener for keyboard events
+// Add event listener for keyboard events.
 document.addEventListener('keydown', handleKeyDown);
 
-function operatorCheck(userInput) {
-  const ALLOWED_OPERATORS = ['+', '-', '/', '*'];
-  return (ALLOWED_OPERATORS.includes(userInput));
-};
+// function returns true if user selects an operator.
+const operatorCheck = (userInput) => ['+', '-', '/', '*'].includes(userInput)
 
-function processInput(userInput) {
-  // debugger
+// handles all incoming inputs
+const  processInput = (userInput) => {
+  debugger
+  const convertedString = parseFloat(currentSequence);
+
   if (operatorCheck(userInput)) {
     if (operator === undefined && numOne === 0) {
-      numOne = convertString(currentSequence);  
-      numTwo = convertString(currentSequence);
+      numOne = convertedString;  
+      numTwo = convertedString;
       operator = userInput;
       clearCurrentSequence();
-    } else if (operator === undefined && numOne != 0) {
+    } else if (operator !== undefined && numOne !== 0) {
       operator = userInput;
-    } else if (operator != undefined && currentSequence === 0) {
+    } else if (operator !== undefined && currentSequence === 0) {
       operator = userInput;
-    } else if (operator != undefined && currentSequence != 0) {
-      numTwo = convertString(currentSequence);
+    } else if (operator !== undefined && currentSequence !== 0) {
+      numTwo = convertedString;
       result = operate(numOne, numTwo, operator);
       displayResult(result);
       numOne = result;
@@ -103,14 +89,14 @@ function processInput(userInput) {
       clearCurrentSequence();
     };
   } else if (userInput === "=") {
-    numTwo = convertString(currentSequence);
-      if (numTwo === 0 && operator === "/") {
-        alert("Yeah, yeah. Nice try, bub.")
-        allClear();
-        return;
+    numTwo = convertedString;
+
+    if (numTwo === 0 && operator === "/") {
+      alert("Yeah, yeah. Nice try, bub.")
+      allClear();
+      return;
     } else if (operator !== undefined && currentSequence !== 0) {
       result = operate(numOne, numTwo, operator);
-      tempOne = result;
       clearCurrentSequence();
       operator = undefined;
       numOne = result;
@@ -126,46 +112,32 @@ function processInput(userInput) {
     currentSequence === '' ? displayDefault() : displayCurSeq();
   } else if (userInput === ".") {
     (currentSequence.includes('.')) ? alert("Only one '.' per number please") : currentSequence += userInput;
+
     displayCurSeq();
   } else {
     currentSequence += userInput;
-    currentSequence = (currentSequence.charAt(0) === '0') ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
+    currentSequence = (currentSequence.charAt(0) === '0' && currentSequence.length > 1) ? currentSequence.substring(1) : currentSequence //removes zero from beginning of string
+
     displayCurSeq();
   };
 };
 
-// clearCurrentSequence();
-
-function clearCurrentSequence() {
-  currentSequence = '';
-};
+// clears current sequence
+const clearCurrentSequence = () => currentSequence = '';
 
 // display functions 
 
 // display results that have been rounded to prevent container runoff
-function displayResult(num) {
-  resultDisplay.textContent = Math.round(num * 10000) / 10000;
-};
+const displayResult = (num) => RESULT_DISPLAY.textContent = Math.round(num * 10000) / 10000;
 
 // displays current sequence
-function displayCurSeq() {
-  resultDisplay.textContent = currentSequence;
-};
+const displayCurSeq = () => RESULT_DISPLAY.textContent = currentSequence;
 
 //displays zero for appropriate instances
-function displayDefault() {
-  resultDisplay.textContent = 0;
-}; 
+const displayDefault = () => RESULT_DISPLAY.textContent = 0; 
 
-//convertString(str)
-
-function convertString(str) {
-  return parseFloat(str);
-};
-
-//allClear();
-
-function allClear() {
+// function clears currentSequence and resets all variables
+const allClear = () => {
   clearCurrentSequence();
   numOne = 0;
   numTwo = 0;
@@ -173,5 +145,6 @@ function allClear() {
   displayDefault();
 };
 
+// setup event listeners and sets initial display
 setupKeyPadBtnListeners();
 displayDefault();
