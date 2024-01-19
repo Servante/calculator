@@ -1,4 +1,4 @@
-# Calculator README
+# Calculator
 
 ## Overview
 
