@@ -15,7 +15,7 @@ const divide = (a, b) => a / b;
 // function takes two numbers and an operator as parameters, 
 // allowing it to perform the specified operation on the given numbers and returning the result.
 const operate = (num1, num2, operator) => {
-  const result;
+  let result;
 
   switch (operator) {
     case "+":
@@ -66,7 +66,7 @@ const operatorCheck = (userInput) => ['+', '-', '/', '*'].includes(userInput)
 
 // handles all incoming inputs
 const  processInput = (userInput) => {
-  debugger
+  // debugger
   const convertedString = parseFloat(currentSequence);
 
   if (operatorCheck(userInput)) {
@@ -75,9 +75,7 @@ const  processInput = (userInput) => {
       numTwo = convertedString;
       operator = userInput;
       clearCurrentSequence();
-    } else if (operator !== undefined && numOne !== 0) {
-      operator = userInput;
-    } else if (operator !== undefined && currentSequence === 0) {
+    } else if (operator !== undefined && currentSequence == 0) {
       operator = userInput;
     } else if (operator !== undefined && currentSequence !== 0) {
       numTwo = convertedString;
@@ -98,7 +96,7 @@ const  processInput = (userInput) => {
     } else if (operator !== undefined && currentSequence !== 0) {
       result = operate(numOne, numTwo, operator);
       clearCurrentSequence();
-      operator = undefined;
+      // operator = undefined;
       numOne = result;
       numTwo = 0;
       displayResult(result);
